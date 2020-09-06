@@ -1,0 +1,11 @@
+{
+    "author" : "ruccho",
+    "description" : "A serializable method call system compatible with asset-to-scene referencing",
+    "displayName": "ExposedUnityEvent",
+    "keywords": [ "unity" ],
+    "license": "MIT",
+    "name": "io.github.ruccho.exposedunityevent",
+    "version": "1.0.0",
+    "unity": "2019.3",
+    "dependencies": { }
+}

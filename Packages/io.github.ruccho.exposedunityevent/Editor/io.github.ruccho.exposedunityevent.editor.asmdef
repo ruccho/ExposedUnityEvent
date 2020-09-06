@@ -1,0 +1,17 @@
+{
+    "name": "io.github.ruccho.exposedunityevent.editor",
+    "references": [
+        "GUID:85da408dd20827c4a8ee4f775ac296d8"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

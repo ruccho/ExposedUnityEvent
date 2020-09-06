@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\nobor\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\nobor\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_ExposedUnityEvent.1395219076.00" t="ExcludeRecursive" />
+    <e p="C:\Users\nobor\Documents\development\repositories\ExposedUnityEvent" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Editor" t="Include">
+          <e p="ExposedUnityEventAsset.cs" t="Include" />
+        </e>
+        <e p="EventContainer.cs" t="Include" />
+      </e>
+      <e p="ExposedUnityEvent.sln" t="IncludeFlat" />
+      <e p="io.github.ruccho.exposedunityevent.csproj" t="IncludeRecursive" />
+      <e p="io.github.ruccho.exposedunityevent.editor.csproj" t="IncludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive">
+        <e p="io.github.ruccho.exposedunityevent" t="Include">
+          <e p="Editor" t="Include">
+            <e p="io.github.ruccho.exposedunityevent.editor.asmdef" t="Include" />
+            <e p="Scripts" t="Include">
+              <e p="ExposedInvokableCallPropertyDrawer.cs" t="Include" />
+              <e p="ExposedUnityEventPropertyDrawer.cs" t="Include" />
+              <e p="TypeRestrictedExposedReferenceDrawer.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Runtime" t="Include">
+            <e p="io.github.ruccho.exposedunityevent.asmdef" t="Include" />
+            <e p="Scripts" t="Include">
+              <e p="ExposedInvokableCall.cs" t="Include" />
+              <e p="ExposedUnityEvent.cs" t="Include" />
+              <e p="TypeRestrictedExposedReferenceAttribute.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
