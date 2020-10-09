@@ -48,6 +48,7 @@ namespace Ruccho.Utilities
                     targetObj = targetComponent.GetComponent(componentTypeName);
                 }
             }
+            else targetObj = targetContainer;
 
             var argumentValues = arguments.Select(a =>
             {
@@ -65,9 +66,17 @@ namespace Ruccho.Utilities
             //Generate Generic Action Type
 
             var argumentTypes = arguments.Select(a => a.ValueType).ToArray();
+            Delegate del = null;
             Type genericDef = GetActionGenericDefinitionType(argumentTypes.Length);
-            Type constructed = genericDef.MakeGenericType(argumentTypes);
-            var del = method.CreateDelegate(constructed, targetObj);
+            if (argumentTypes.Length > 0)
+            {
+                Type constructed = genericDef.MakeGenericType(argumentTypes);
+                del = method.CreateDelegate(constructed, targetObj);
+            }
+            else
+            {
+                del = method.CreateDelegate(genericDef, targetObj);
+            }
 
             //Execute
             cachedContainer = targetContainer;
