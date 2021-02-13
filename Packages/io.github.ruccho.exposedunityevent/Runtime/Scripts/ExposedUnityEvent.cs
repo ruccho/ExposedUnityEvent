@@ -9,7 +9,7 @@ namespace Ruccho.Utilities
     [Serializable]
     public class ExposedUnityEvent
     {
-        [SerializeField] private List<ExposedInvokableCall> calls;
+        [SerializeField] private List<ExposedInvokableCall> calls = default;
 
         public void Invoke(IExposedPropertyTable resolver)
         {

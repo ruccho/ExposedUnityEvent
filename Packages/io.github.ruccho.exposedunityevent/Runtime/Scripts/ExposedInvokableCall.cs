@@ -11,11 +11,11 @@ namespace Ruccho.Utilities
     [Serializable]
     public class ExposedInvokableCall
     {
-        [SerializeField] private ExposedReference<UnityEngine.Object> target;
-        [SerializeField] private string componentTypeName;
-        [SerializeField] private string methodName;
+        [SerializeField] private ExposedReference<UnityEngine.Object> target = default;
+        [SerializeField] private string componentTypeName = default;
+        [SerializeField] private string methodName = default;
 
-        [SerializeReference] private ExposedInvokableCallArgumentBase[] arguments;
+        [SerializeReference] private ExposedInvokableCallArgumentBase[] arguments = default;
 
         private UnityEngine.Object cachedContainer;
         private Delegate cachedDelegate;
