@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.AccessControl;
-using System.Text;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UIElements;
 
 namespace Ruccho.Utilities.Editors
 {
@@ -61,60 +56,6 @@ namespace Ruccho.Utilities.Editors
 
             var argumentsProp = property.FindPropertyRelative("arguments");
             int argumentsCount = argumentsProp.arraySize;
-            /*
-            if (target != null)
-            {
-                Type[] argumentTypes = new Type[argumentsCount];
-                for (int i = 0; i < argumentsCount; i++)
-                {
-                    var argumentProp = argumentsProp.GetArrayElementAtIndex(i);
-                    var argumentValueProp = argumentProp.FindPropertyRelative("value");
-                    if (argumentValueProp == null) continue;
-
-                    string[] typeInfo = argumentProp.managedReferenceFullTypename.Split(' ');
-                    //Check type
-
-                    Type argumentContainerType = typeof(object);
-                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-                    {
-                        var matched = assembly.GetTypes().FirstOrDefault(t => t.FullName == typeInfo[1]);
-                        if (matched != default)
-                        {
-                            argumentContainerType = matched;
-                            break;
-                        }
-                    }
-
-                    var argumentContainerGenericArgumentTypes = argumentContainerType.BaseType.GetGenericArguments();
-                    Type argumentType = null;
-
-                    if (argumentContainerType == typeof(ExposedInvokableCallArgumentObject))
-                    {
-                        var argumentObjectTypeName = argumentProp.FindPropertyRelative("objectTypeName").stringValue;
-                        argumentType = typeof(UnityEngine.Object);
-                        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-                        {
-                            var matched = assembly.GetTypes().FirstOrDefault(t => t.FullName == argumentObjectTypeName);
-                            if (matched != default)
-                            {
-                                argumentType = matched;
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        argumentType = argumentContainerGenericArgumentTypes[0];
-                    }
-
-                    argumentTypes[i] = argumentType;
-                }
-
-                //var matchedMethod = FindMethod(target, methodName, argumentTypes);
-            }
-*/
-            //Debug.Log(matchedMethod != null);
-
 
             var r = position;
             r.height = line;
@@ -132,9 +73,6 @@ namespace Ruccho.Utilities.Editors
             {
                 var menu = BuildGenericMenu(property, target, data => { });
                 menu.DropDown(r);
-            }
-            else
-            {
             }
 
             r.y += unit;
@@ -232,15 +170,6 @@ namespace Ruccho.Utilities.Editors
             if (@object is GameObject)
             {
                 Component[] components = (@object as GameObject).GetComponents<Component>();
-                //同名のComponentはひとつにまとめる
-                List<string> list = (from c in components
-                    where c != null
-                    select c.GetType().Name
-                    into x
-                    group x by x
-                    into g
-                    where g.Count() > 1
-                    select g.Key).ToList();
                 Component[] array = components;
                 foreach (Component component in array)
                 {
@@ -298,22 +227,6 @@ namespace Ruccho.Utilities.Editors
                         serializableOnly = false;
                         break;
                     }
-
-                    /*
-                    var isUnityObject = p.ParameterType.IsSubclassOf(typeof(UnityEngine.Object));
-                    var isObject = p.ParameterType == typeof(System.Object);
-                    var hasSerializableAttribute = (p.ParameterType.Attributes & TypeAttributes.Serializable) != 0;
-                    var isAbstract = p.ParameterType.IsAbstract;
-                    var isGeneric = p.ParameterType.IsGenericType;
-
-                    if (isUnityObject) continue;
-
-                    if (isObject || !hasSerializableAttribute || isAbstract || isGeneric)
-                    {
-                        //Unserializable
-                        serializableOnly = false;
-                        break;
-                    }*/
                 }
 
                 if (!serializableOnly)
@@ -369,7 +282,6 @@ namespace Ruccho.Utilities.Editors
                 if (i >= sourceSize)
                 {
                     elementProp.managedReferenceValue = null;
-                    //elementProp.serializedObject.ApplyModifiedPropertiesWithoutUndo();
                 }
 
                 //Get target container type
@@ -446,41 +358,14 @@ namespace Ruccho.Utilities.Editors
             }
 
             var componentType = target.GetType();
+            property.FindPropertyRelative("target").exposedReferenceValue = target;
             property.FindPropertyRelative("componentTypeName").stringValue =
                 $"{componentType.FullName}";
             property.FindPropertyRelative("methodName").stringValue = methodInfo.Name as string;
 
             property.serializedObject.ApplyModifiedProperties();
+            Undo.RecordObject(property.serializedObject.context, "Set Method");
             return true;
-        }
-
-        private static MethodInfo FindMethod(UnityEngine.Object targetObject, string methodName, Type[] argumentTypes)
-        {
-            for (Type type = targetObject.GetType(); type != typeof(object) && type != null; type = type.BaseType)
-            {
-                MethodInfo method = type.GetMethod(methodName,
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, argumentTypes,
-                    null);
-                if (method != null)
-                {
-                    ParameterInfo[] parameters = method.GetParameters();
-                    bool flag = true;
-                    int index = 0;
-                    foreach (ParameterInfo parameterInfo in parameters)
-                    {
-                        flag = argumentTypes[index].IsPrimitive == parameterInfo.ParameterType.IsPrimitive;
-                        if (flag)
-                            ++index;
-                        else
-                            break;
-                    }
-
-                    if (flag)
-                        return method;
-                }
-            }
-
-            return null;
         }
     }
 }

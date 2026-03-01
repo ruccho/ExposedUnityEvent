@@ -29,7 +29,8 @@ namespace Ruccho.Utilities
                 throw new NullReferenceException("Failed to resolve ExposedReference.");
             }
             
-            if (cachedDelegate != null && targetContainer == cachedContainer)
+            // NOTE: (bool)targetContainer == trueかつtargetContainer == cachedContainerにもかかわらず、(bool)cachedContainer == falseの場合がある 
+            if (cachedDelegate != null && cachedContainer && targetContainer == cachedContainer)
             {
                 //Use cached delegate
                 cachedDelegate.DynamicInvoke(arguments.Select(a => a.GetValue(resolver)).ToArray());
@@ -37,7 +38,8 @@ namespace Ruccho.Utilities
             }
 
             UnityEngine.Object targetObj = null;
-            if (targetContainer.GetType().FullName != componentTypeName)
+            var containerTypeName = targetContainer.GetType().FullName;
+            if (containerTypeName != componentTypeName)
             {
                 if (targetContainer is GameObject targetGameObject)
                 {
@@ -47,8 +49,12 @@ namespace Ruccho.Utilities
                 {
                     targetObj = targetComponent.GetComponent(componentTypeName);
                 }
+            }else targetObj = targetContainer;
+
+            if (!targetObj)
+            {
+                throw new NullReferenceException($"Failed to get {componentTypeName} ({containerTypeName}).");
             }
-            else targetObj = targetContainer;
 
             var argumentValues = arguments.Select(a =>
             {
